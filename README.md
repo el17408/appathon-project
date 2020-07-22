@@ -1,6 +1,6 @@
 # :computer:  Appathon project for the course "Internet and Applications" 
 
-#Περιγραφή Εργασίας
+# Περιγραφή Εργασίας
 CTGOV-03: Χώρες στις οποίες έχουν λάβει χώρα Κλινικές Μελέτες γύρω από μία συγκεκριμένη Ασθένεια
 
 # :book: Contents
