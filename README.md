@@ -11,7 +11,7 @@ CTGOV-03: Χώρες στις οποίες έχουν λάβει χώρα Κλι
 Εργαλεία :
   MySQL και 
   1) node-red ή
-  2) html , css , javascript 
+  2) html , css , javascript + χρήση google maps api καθώς και api για μετατροπή ονόματος χώρας σε συντεταγμένες ώστε να τοποθετηθούν ως markers στον χάρτη
 
 # :pencil: Authors
 The author of this project is: Roussis Dimitrios
