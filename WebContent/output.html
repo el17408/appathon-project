@@ -20,7 +20,7 @@
     
     <div>
 		<!-- The form -->
-		<form class="example" onsubmit="validateFormOnSubmit();">
+		<form class="example">
 		<a href="http://localhost:8080/appathon_project/"><img src="logo.jpg" title="NTUA" ></a>
 		
 		  <input type="text" placeholder="Search for a disease..." id="search" name="search">
@@ -119,7 +119,7 @@
 		    			return;
 		    		}
 		    	}
-
+/*
 		    	function httpGet(theUrl)
 		    	{
 		    	    var xmlHttp = new XMLHttpRequest();
@@ -127,8 +127,7 @@
 		    	    xmlHttp.send( null );
 		    	    return xmlHttp.responseText;
 		    	}
-		    	////$result = $conn->query( "SELECT country_name , count(country_name) as cnt from trials,country where official_title LIKE '%"+$input+"%' or brief_title LIKE '%"+$input+"%' or acronym LIKE '%"+$input+"%' group by country_name") or die($conn->connect_error);
-
+		    	*/
 		    	function makeMarkers(arr){
 		    		var options = {
 		    	                    zoom: 2,
