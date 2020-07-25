@@ -9,10 +9,10 @@
         <title>Appathon project</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR919QvVF2Y632fs9uwdASsOAiVaykJd4" type="text/javascript"></script>
-		<script src="make_markers.js" type="text/javascript"></script>
+		
 		
     </head>
-    <body>
+     <body>
     
     <div class="loader-wrapper">
     	<span class="loader"><span class="loader-inner"></span></span>
@@ -20,7 +20,7 @@
     
     <div>
 		<!-- The form -->
-		<form class="example">
+		<form class="example" onsubmit="">
 		<a href="http://localhost:8080/appathon_project/"><img src="logo.jpg" title="NTUA" ></a>
 		
 		  <input type="text" placeholder="Search for a disease..." id="search" name="search">
@@ -56,32 +56,20 @@
 		$(document).ready(function() {
 		    // execute
 		    (function() {
-		    		//<% String name = request.getParameter( "input" ); %>
+		    		
 			    	var input = getUrlVars()["search"];
+			    	if (input == "" or input == " " or input = null){
+			    		return;
+		    		}
 					input = input.split("+");	//remove all occurances of +
-					input = input.join(' ');	// ^^
+					input = input.join(' ');	// and replace them with a space
 			    	
 		    		if (getUrlVars()["format"] == "map"){
 			    		createOutput(JSON.parse(httpGet("http://localhost:8080/appathon_project/sql_request.php?input="+input)),"map");
 		    		}
 		    		else {
 		    			createOutput(JSON.parse(httpGet("http://localhost:8080/appathon_project/sql_request.php?input="+input)),"json");
-		    		}/*
-		    	    xmlHttp.open( "POST", "sql_request.php", true ); // true for asynchronous request
-		    	    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		    	    xmlHttp.send('input='+input);  
-		    	    var results = JSON.parse(this.responseText);
-		    		return createOutput(results);
-		    	    xmlHttp.onreadystatechange = function(){ 
-		    	    	if (this.readystate === 4 && this.status === 200) {
-		    	    		console.log(this.responseText); 
-		    	    		var results = JSON.parse(this.responseText);
-		    	        	return createOutput(results);
-		    	    	}
-		    	    }; 
-		    	    */
-
-		    	
+		    		}
 		    	function getUrlVars() {
 		    	        var vars = {};
 		    	        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -91,7 +79,6 @@
 		    	}
 		    	function createOutput( output , format ) {
 		    		var toReturn = [];
-		    		//console.log(output);
 		    		
 		    		for(var i = 0; i < output.length; i++) {
 		    			var request = JSON.parse(httpGet("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDR919QvVF2Y632fs9uwdASsOAiVaykJd4&address="+output[i].country_name));
@@ -119,15 +106,21 @@
 		    			return;
 		    		}
 		    	}
-/*
+
 		    	function httpGet(theUrl)
 		    	{
-		    	    var xmlHttp = new XMLHttpRequest();
+		    		if (window.XMLHttpRequest){
+		    		 	var xmlHttp = new XMLHttpRequest();
+		    		 }
+		    		 else {
+		    			 var xmlHttp = new ActiveObject("Microsoft.XMLHTTP");
+		    		 }
 		    	    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
 		    	    xmlHttp.send( null );
 		    	    return xmlHttp.responseText;
 		    	}
-		    	*/
+		    	
+		    	
 		    	function makeMarkers(arr){
 		    		var options = {
 		    	                    zoom: 2,
@@ -150,5 +143,6 @@
 		    	}
 		    })();
 		});
+		   
 		</script>
 </html>

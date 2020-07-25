@@ -1,7 +1,12 @@
 //synchronous
 function httpGet2(theUrl)
 {
-    var xmlHttp = new XMLHttpRequest();
+	if (window.XMLHttpRequest){
+	 	var xmlHttp = new XMLHttpRequest();
+	 }
+	 else {
+		 var xmlHttp = new ActiveObject("Microsoft.XMLHTTP");
+	 }
     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
     xmlHttp.send( null );
     return xmlHttp.responseText;
@@ -10,7 +15,12 @@ function httpGet2(theUrl)
 //asynchronous
 function httpGet(theUrl)
 {
-	    var xmlHttp = new XMLHttpRequest();
+	if (window.XMLHttpRequest){
+	 	var xmlHttp = new XMLHttpRequest();
+	 }
+	 else {
+		 var xmlHttp = new ActiveObject("Microsoft.XMLHTTP");
+	 }
 	    xmlHttp.open( "GET", theUrl, true ); // false for synchronous request
 	    xmlHttp.onreadystatechange = function(){ 
 	    	if (this.readystate === 4 && this.status === 200) {
