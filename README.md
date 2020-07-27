@@ -29,3 +29,6 @@ CTGOV-03: Χώρες στις οποίες έχουν λάβει χώρα Κλι
   - Επίστροφή δεδομένων με markers πάνω σε χάρτη
 # :pencil: Authors
 The author of this project is: Roussis Dimitrios
+
+# :book: Documentation
+The powerpoint can be found in the Documentation folder
