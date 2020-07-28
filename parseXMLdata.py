@@ -106,7 +106,7 @@ def db_query ( off_title, brief_title,  acronym, nct_id, countries):
 # This script has to be in the same directory
 # or sub directory with the (xml) data
 
-if (sys.argv[1] != none):
+if (sys.argv[1] != None):
     thisdir = sys.argv[1]
     # finds all files that end with xml 
     # in this directory or in any 
@@ -116,7 +116,7 @@ if (sys.argv[1] != none):
             if file.endswith(".xml"):
                 keep_useful_data(os.path.join(r, file))
 else :
-    print("Usage like: parseXMLdata.py /path/to/xml/data")
+    print("Usage like: python parseXMLdata.py /path/to/xml/data")
     
 
 
