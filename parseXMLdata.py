@@ -1,4 +1,5 @@
 import os
+import sys
 import mysql.connector
 
 
@@ -105,14 +106,18 @@ def db_query ( off_title, brief_title,  acronym, nct_id, countries):
 # This script has to be in the same directory
 # or sub directory with the (xml) data
 
-# Getting the current work directory (cwd)
-thisdir = os.getcwd()   
+if (sys.argv[1] != none):
+    thisdir = sys.argv[1]
+    # finds all files that end with xml 
+    # in this directory or in any 
+    # sub directory
+    for r, d, f in os.walk(thisdir):    # r=root, d=directories, f = files
+        for file in f:
+            if file.endswith(".xml"):
+                keep_useful_data(os.path.join(r, file))
+else :
+    print("Usage like: parseXMLdata.py /path/to/xml/data")
+    
 
-# finds all files that end with xml 
-# in this directory or in any 
-# sub directory
-for r, d, f in os.walk(thisdir):    # r=root, d=directories, f = files
-    for file in f:
-        if file.endswith(".xml"):
-            keep_useful_data(os.path.join(r, file))
+
             

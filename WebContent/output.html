@@ -78,14 +78,17 @@
 			    	}
 					input = input.split("+");	//remove all occurances of +
 					input = input.join(' ');	// and replace them with a space
-			    	
-		    		if (getUrlVars()["format"] == "map"){
+			    	 if (getUrlVars()["format"] == "map"){
 			    		createOutput(JSON.parse(httpGet("http://localhost:8080/appathon_project/sql_request.php?input="+input)),"map");
 		    		}
-		    		else {
+		    		else if(getUrlVars()["format"] == "json") {
 		    			createOutput(JSON.parse(httpGet("http://localhost:8080/appathon_project/sql_request.php?input="+input)),"json");
 		    		}
-		    	function getUrlVars() {
+		    		return;
+		    })();
+		});
+		    	
+				function getUrlVars() {
 		    	        var vars = {};
 		    	        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
 		    	            vars[key] = value;
@@ -156,8 +159,6 @@
 		    			});
 		    		}
 		    	}
-		    })();
-		});
 		   
 		</script>
 </html>
