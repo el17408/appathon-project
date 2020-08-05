@@ -103,8 +103,9 @@ def db_query ( off_title, brief_title,  acronym, nct_id, countries):
 
 #**************************MAIN*************************
 
-# This script has to be in the same directory
-# or sub directory with the (xml) data
+#The second argument has to be the path
+#to a directory that contains the xml 
+#data( in the same directory or in subdirectories)
 
 try:
     thisdir = sys.argv[1]
@@ -117,7 +118,3 @@ try:
                 keep_useful_data(os.path.join(r, file))
 except :
     print("Usage like: python parseXMLdata.py /path/to/xml/data")
-    
-
-
-            
