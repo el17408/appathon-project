@@ -17,32 +17,20 @@
         <!-- Load js files to use with google maps -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR919QvVF2Y632fs9uwdASsOAiVaykJd4" type="text/javascript"></script>
-		<script type="text/javascript">
-		// check DOM Ready
-			
-			$(document).ready(function() {
-			    // execute
-			    (function() {
-			        // map options
-			        var options = {
-			            zoom: 2,
-			            center: new google.maps.LatLng(45.8665231, -6.9240942), // center map
-			            mapTypeId: google.maps.MapTypeId.TERRAIN,
-			            mapTypeControl: false
-			        };
-	
-			        // init map
-			        var map = new google.maps.Map(document.getElementById('map_canvas'), options);
-			    })();
-			});
+        <script src="make_markers.js"></script>
 		
-		</script>
     </head>
     <body>
+    
+    <!-- Gif while loading data , doesn't work properly -->
+    <div class="loader-wrapper">
+    	<span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    
     <div>
 		  
 		<!-- The form -->
-		<form class="example" action="output.html" method="GET" id="formid" >
+		<form class="example" action="index.html" method="GET" id="formid" >
 		<a href="http://localhost:8080/appathon_project/"><img src="logo.jpg" title="NTUA" ></a>
 		
 		
@@ -70,6 +58,14 @@
     		</p>
     	</div>
     </footer>
+    
+    <!-- Script to remove loader after page is loaded -->
+    <script>
+    	$(window).on("load",function(){
+    		$(".loader-wrapper").fadeOut("slow");
+    	});
+    	
+    </script>
  </body>
     
 </html>

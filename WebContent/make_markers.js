@@ -5,6 +5,7 @@ $(document).ready(function() {
 			
 	    var input = getUrlVars()["search"];
 		if (input === "" || input === " " || input == undefined || input == null) {
+			initMap();
 			return;
 		}
 		input = input.split("+");	//remove all occurances of +
@@ -18,7 +19,20 @@ $(document).ready(function() {
 	    return;
 	    })();
 	});
-	    	
+
+	function initMap() {
+	        // map options
+	        var options = {
+	            zoom: 2,
+	            center: new google.maps.LatLng(45.8665231, -6.9240942), // center map
+	            mapTypeId: google.maps.MapTypeId.TERRAIN,
+	            mapTypeControl: false
+	        };
+
+	        // init map
+	        var map = new google.maps.Map(document.getElementById('map_canvas'), options);
+	    }
+	
 		function getUrlVars() {
     	        var vars = {};
     	        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
