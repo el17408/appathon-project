@@ -29,16 +29,9 @@ my_cursor = mydb.cursor()
 #already exist..
 try:
     my_cursor.execute("CREATE TABLE `country` ( `nct_id` varchar(11) not NULL, `country_name` varchar(255) not NULL ); ")
-    my_cursor.execute("CREATE TABLE `trials` ( `nct_id` varchar(11) not NULL, `official_title` varchar(360) DEFAULT NULL,`brief_title` varchar(360) DEFAULT NULL, `acronym` varchar(255) DEFAULT NULL ); ")
     my_cursor.execute("CREATE TABLE `condition` ( `nct_id` varchar(11) not NULL, `cond` varchar(100) not NULL ); ")
-    my_cursor.execute("CREATE TABLE `mesh_term` ( `nct_id` varchar(11) not NULL, `term` varchar(100) not NULL); ")
     my_cursor.execute("ALTER TABLE `country` ADD KEY `nct_id` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `trials` ADD KEY `nct_id` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `condition` ADD KEY `nct_id` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `mesh_term` ADD KEY `nct_id` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `country` ADD CONSTRAINT `country_ibfk_1` FOREIGN KEY (`nct_id`) REFERENCES `trials` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `condition` ADD CONSTRAINT `condition_ibfk_1` FOREIGN KEY (`nct_id`) REFERENCES `trials` (`nct_id`); ")
-    my_cursor.execute("ALTER TABLE `mesh_term` ADD CONSTRAINT `mesh_term_ibfk_1` FOREIGN KEY (`nct_id`) REFERENCES `trials` (`nct_id`); ")
+    my_cursor.execute("ALTER TABLE `condition` ADD KEY `nct_id` (`nct_id`); ")    
     my_cursor.execute("COMMIT;")
 except:
     pass
@@ -50,56 +43,25 @@ except:
 def keep_useful_data ( filepath ):
     with open( filepath, "r", encoding="utf8" ) as fp:   #open file found
         countries = []
-        mesh_terms = []
         condition = []
-        off_title = ""
-        brief_title = ""
-        acronym = ""
         nct_id = ""
         for line in fp :
-            if "<official_title>" in line:
-                #keep the data inside the xml tags
-                off_title = line[line.find("<official_title>")+len("<official_title>"):line.rfind("</official_title>")]
-            elif "<brief_title>" in line:
-                #keep the data inside the xml tags
-                brief_title = line[line.find("<brief_title>")+len("<brief_title>"):line.rfind("</brief_title>")]
-            elif "<acronym>" in line:
-                #keep the data inside the xml tags
-                acronym = line[line.find("<acronym>")+len("<acronym>"):line.rfind("</acronym>")]
-            elif "<nct_id>" in line:
+            if "<nct_id>" in line:
                 #keep the data inside the xml tags
                 nct_id = line[line.find("<nct_id>")+len("<nct_id>"):line.rfind("</nct_id>")]
-            elif "    <country>" in line:
-                #keep the data inside the xml tags
-                countries.append(line[line.find("    <country>")+len("    <country>"):line.rfind("</country>")])
-            elif "    <country>" in line:
+            elif ("    <country>" in line) and ("        " not in line):
                 #keep the data inside the xml tags
                 countries.append(line[line.find("    <country>")+len("    <country>"):line.rfind("</country>")])
             elif "<condition>" in line:
                 #keep the data inside the xml tags
                 condition.append(line[line.find("<condition>")+len("<condition>"):line.rfind("</condition>")])
-            elif "<mesh_term>" in line:
-                #keep the data inside the xml tags
-                mesh_terms.append(line[line.find("<mesh_term>")+len("<mesh_term>"):line.rfind("</mesh_term>")])
     if(nct_id !=""):
-        db_query( off_title, brief_title, acronym, nct_id, countries,condition,mesh_terms)
+        db_query( nct_id, countries,condition)
 
 
-def db_query ( off_title, brief_title,  acronym, nct_id, countries,conditions,mesh_terms):
+def db_query ( nct_id, countries,conditions):
     #remove "'" because we will have problems in the query
     nct_id = nct_id.replace("'","")
-    off_title = off_title.replace("'","")
-    brief_title = brief_title.replace("'","")
-    acronym = acronym.replace("'","")
-    
-    #make the query 
-    query = "insert into `trials` (nct_id , official_title, brief_title, acronym) VALUES ('" + nct_id + "' , '" + off_title + "' , '" + brief_title + "' , '" + acronym+ "')"
-    query.replace("''","NULL")
-    query = query + ";"
-    
-    #execute query
-    my_cursor.execute(query)
-    mydb.commit()
     
     #countries query
     if (len(countries) > 1) :
@@ -131,28 +93,11 @@ def db_query ( off_title, brief_title,  acronym, nct_id, countries,conditions,me
     elif len(conditions) == 1 :
         condition = conditions[0].replace("'","")
         query = "insert into `condition` (nct_id , cond) VALUES ('" + nct_id + "' , '" + condition +"')"
-        print(query)
         query.replace("''","NULL")
         query = query + ";"
         my_cursor.execute(query)
         mydb.commit()
 
-    #mesh_terms query
-    if (len(mesh_terms) > 1) :
-        for mesh_term in mesh_terms:
-            mesh_term = mesh_term.replace("'","")
-            query = "insert into `mesh_term` (nct_id , term) VALUES ('" + nct_id + "' , '" + mesh_term +"')"
-            query.replace("''","NULL")
-            query = query + ";"
-            my_cursor.execute(query)
-            mydb.commit()
-    elif len(mesh_terms) == 1 :
-        mesh_term = mesh_terms[0].replace("'","")
-        query = "insert into `mesh_term` (nct_id , term) VALUES ('" + nct_id + "' , '" + mesh_term +"')"
-        query.replace("''","NULL")
-        query = query + ";"
-        my_cursor.execute(query)
-        mydb.commit()
 
 
 #**************************MAIN*************************
@@ -170,5 +115,8 @@ if (len(sys.argv)== 2):
         for file in f:
             if file.endswith(".xml"):
                 keep_useful_data(os.path.join(r, file))
+    my_cursor.execute("SET SESSION old_alter_table=1;")
+    my_cursor.execute("ALTER IGNORE TABLE `country` ADD UNIQUE INDEX u(nct_id);")
+    my_cursor.execute("SET SESSION old_alter_table=0;")
 else :
     print("Usage like: python parseXMLdata.py /path/to/xml/data")
