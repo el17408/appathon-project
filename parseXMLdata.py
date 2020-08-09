@@ -85,7 +85,6 @@ def db_query ( nct_id, countries,conditions):
         for condition in conditions:
             condition = condition.replace("'","")
             query = "insert into `condition` (nct_id , cond) VALUES ('" + nct_id + "' , '" + condition +"')"
-            print(query)
             query.replace("''","NULL")
             query = query + ";"
             my_cursor.execute(query)
@@ -116,7 +115,8 @@ if (len(sys.argv)== 2):
             if file.endswith(".xml"):
                 keep_useful_data(os.path.join(r, file))
     my_cursor.execute("SET SESSION old_alter_table=1;")
-    my_cursor.execute("ALTER IGNORE TABLE `country` ADD UNIQUE INDEX u(nct_id);")
+    my_cursor.execute("ALTER IGNORE TABLE `country` ADD UNIQUE INDEX u1(nct_id,country_name);")
+    my_cursor.execute("ALTER IGNORE TABLE `condition` ADD UNIQUE INDEX u2(nct_id,cond);")
     my_cursor.execute("SET SESSION old_alter_table=0;")
 else :
     print("Usage like: python parseXMLdata.py /path/to/xml/data")
