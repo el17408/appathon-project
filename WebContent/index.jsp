@@ -26,26 +26,28 @@
         	(function() {
 					var country='<%=session.getAttribute("countries")%>';
 					var count='<%=session.getAttribute("counters")%>';
-					country = country.replace(/^\[|\]$/g, "").split(", ");
-					count = count.replace(/^\[|\]$/g, "").split(", ");
-					if (country == "undefined" || country == "null" || country == undefined || country == null){
+					if (country == "undefined" || country == "null" || country == undefined || country == null || country == 'null' || country == 'undefined'){
 						initMap();
 						return;
 					}
+					//transform country,count from string to array
+					country = country.replace(/^\[|\]$/g, "").split(", ");
+					count = count.replace(/^\[|\]$/g, "").split(", ");
 					var format='<%=session.getAttribute("format")%>';
-					createOutput(country,count,format)
-					
+					createOutput(country,count,format)					
 				
 			})();
     	});
         function createOutput( country , count, format ) {
     		var toReturn= [];
     		for(var i = 0; i < country.length; i++) {
+    			//the key is exposed. Should be a session attribute...
     			var request = JSON.parse(httpGet("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDR919QvVF2Y632fs9uwdASsOAiVaykJd4&address="+country[i]));
     			if (request.status == "ZERO_RESULTS" || request.status == "INVALID_REQUEST") {
     				continue;
     			}
     			else{
+    				//create json object and add it to the array
     				toReturn.push({country_name: country[i],
     								lat: request.results[0].geometry.location.lat,
     								lng: request.results[0].geometry.location.lng,
