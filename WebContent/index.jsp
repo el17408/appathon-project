@@ -42,7 +42,7 @@
     		var toReturn= [];
     		for(var i = 0; i < country.length; i++) {
     			//the key is exposed. Should be a session attribute...
-    			var request = JSON.parse(httpGet("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDR919QvVF2Y632fs9uwdASsOAiVaykJd4&address="+country[i]));
+    			var request = JSON.parse(httpGet("https://maps.googleapis.com/maps/api/geocode/json?key=api_key&address="+country[i]));
     			if (request.status == "ZERO_RESULTS" || request.status == "INVALID_REQUEST") {
     				continue;
     			}
@@ -152,7 +152,7 @@
     
     <footer class="footer-container text-center">
     	<div class="container">
-    		<p>© Website created by Dimitris Roussis 
+    		<p>Â© Website created by Dimitris Roussis 
     			<a href="https://github.com/el17408/appathon-project" title="" class="fa-icon">
     				<i class="fa fa-github"></i>
     			</a>
